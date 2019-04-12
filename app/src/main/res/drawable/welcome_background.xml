@@ -10,7 +10,7 @@
             />
     </item>
     <item
-        android:top="50dp"
+        android:top="180dp"
         >
         <bitmap xmlns:android="http://schemas.android.com/apk/res/android"
             android:src="@mipmap/wsjp_logo"
