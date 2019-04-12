@@ -5,6 +5,50 @@
 
     <dist:module dist:instant="true" />
 
+    <!-- 权限 -->
+
+    <!-- 访问网络连接 -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <!-- 获取应用的文件大小 -->
+    <uses-permission android:name="android.permission.GET_PACKAGE_SIZE"/>
+
+    <!--  改变WiFi状态  -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+
+    <!--  改变WiFi多播状态  -->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
+
+    <!--  改变网络状态 如是否能联网 -->
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
+
+    <!-- 允许访问摄像头进行拍照 -->
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+    <!-- 拨打电话 拨号器里输入电话号码 -->
+    <uses-permission android:name="android.permission.CALL_PHONE"/>
+
+    <!-- 蓝牙管理 允许程序进行发现和配对新的蓝牙设备 -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <!-- 使用蓝牙 允许程序连接配对过的蓝牙设备 -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+
+    <!--  获取WiFi状态 获取当前WiFi接入的状态以及WLAN热点的信息 -->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <!-- 获取网络状态 获取网络信息状态，如当前的网络连接是否有效 -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <!-- 获取精确位置 通过GPS芯片接收卫星的定位信息，定位精度达10米以内 -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
+    <!-- 获取粗略位置 通过WiFi或移动基站的方式获取用户错略的经纬度信息，定位精度大概误差在30~1500米-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+    <!-- 访问登记属性 读取或写入登记check-in数据库属性表的权限 -->
+    <uses-permission android:name="android.permission.ACCESS_CHECKIN_PROPERTIES "/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
