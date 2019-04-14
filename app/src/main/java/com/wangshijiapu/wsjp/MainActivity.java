@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
-            sleep(5000);
+            sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
