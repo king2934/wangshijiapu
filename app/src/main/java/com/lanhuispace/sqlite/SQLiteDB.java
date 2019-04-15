@@ -8,15 +8,13 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 public class SQLiteDB extends SQLiteOpenHelper {
-    private Context mContext;
     public static final String DB_NAME = "wsjp.db";
     public static final int DB_VERSION = 1;
     public static final String TABLE_ZIBEI = "zibei";
 
 	// 传递数据库名与版本号给父类
     public SQLiteDB(@Nullable Context context, @Nullable SQLiteDatabase.CursorFactory factory) {
-        super(context, DB_NAME, factory, DB_VERSION);
-        mContext = context;
+	super(context, DB_NAME, factory, DB_VERSION);
         Log.d("getdata","SQLiteDB类:new SQLiteDB");
     }
 

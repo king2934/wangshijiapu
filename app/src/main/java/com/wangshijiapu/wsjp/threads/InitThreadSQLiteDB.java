@@ -1,6 +1,7 @@
 package com.wangshijiapu.wsjp.threads;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.lanhuispace.sqlite.SQLiteDB;
@@ -12,7 +13,10 @@ public class InitThreadSQLiteDB extends Thread {
         super();
         mContext = context;
         sdb = new SQLiteDB(mContext,null);
-        sdb.getWritableDatabase();
+        SQLiteDatabase sqlDB = sdb.getWritableDatabase();
+        if(sqlDB.isOpen()){
+            Log.d("getdata","thread isOpen");
+        }
     }
 
     @Override
