@@ -16,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         Intent is = new Intent(this, InitService.class);
-        startService(is);//启动一个服务
+        startService(is);//启动一个服务 
 
         try {
             sleep(3000);
