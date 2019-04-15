@@ -41,9 +41,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 tv.setText("开始改变");
-                SQLiteDB sdb = new SQLiteDB(null,null);
-                SQLiteDatabase db = sdb.getReadableDatabase();
-                Cursor cursor = db.query("zibei",new String[]{"id","name"},"id=?",new String[]{"1"},null, null, null, null);
                 Toast.makeText(getApplicationContext(),"Button点击事件1",Toast.LENGTH_LONG).show();
             }
         });
