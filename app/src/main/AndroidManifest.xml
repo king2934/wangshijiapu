@@ -64,7 +64,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".service.InitService"
+            android:name=".services.InitService"
             android:label="@string/init_service"
             />
     </application>

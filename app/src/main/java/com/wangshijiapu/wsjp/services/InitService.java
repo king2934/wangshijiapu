@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.util.Log;
 
+
 import com.wangshijiapu.wsjp.threads.InitThreadSQLiteDB;
 
 import androidx.annotation.Nullable;
@@ -22,7 +23,7 @@ public class InitService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("getdata", "onStartCommand");
-        new InitThreadSQLiteDB();
+        new InitThreadSQLiteDB().start();
         return super.onStartCommand(intent, flags, startId);
     }
 
