@@ -4,6 +4,8 @@ import android.util.Log;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.TextView;
+
 import com.lanhuispace.http.GetJson;
 
 import static java.lang.Thread.sleep;
@@ -19,9 +21,13 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
         setContentView(R.layout.activity_main);
-        Log.d("data","activity_main");
-        new GetJson("https://").getDataJson();
+
+        TextView tv = findViewById(R.id.id_main_TextView);
+
+        tv.setText("wangshijiapu");
     }
 
 
 }
+
+
