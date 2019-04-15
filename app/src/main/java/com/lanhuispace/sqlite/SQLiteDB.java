@@ -17,7 +17,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public SQLiteDB(@Nullable Context context, @Nullable SQLiteDatabase.CursorFactory factory) {
         super(context, DB_NAME, factory, DB_VERSION);
         mContext = context;
-        Log.d("getdata","new SQLiteDB");
+        Log.d("getdata","SQLiteDB类:new SQLiteDB");
     }
 
     @Override

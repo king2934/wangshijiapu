@@ -11,11 +11,9 @@ import com.wangshijiapu.wsjp.threads.InitThreadSQLiteDB;
 import androidx.annotation.Nullable;
 
 public class InitService extends Service {
-    private Context mContext;
 
     public InitService() {
         super();
-        mContext = getBaseContext();
     }
 
     //创建服务时调用
@@ -29,7 +27,7 @@ public class InitService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d("getdata", "onStartCommand");
-        new InitThreadSQLiteDB(mContext).start();
+        new InitThreadSQLiteDB(getBaseContext()).start();
         return super.onStartCommand(intent, flags, startId);
     }
 
