@@ -15,8 +15,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //SQLiteDB sdb = new SQLiteDB(getBaseContext(),null);
+        //sdb.getWritableDatabase();
+
         Intent is = new Intent(this, InitService.class);
-        startService(is);//启动一个服务 
+        startService(is);//启动一个服务
 
         try {
             sleep(3000);
