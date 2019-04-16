@@ -80,7 +80,21 @@ public class SQLiteDB extends SQLiteOpenHelper {
             }
         }
     }
-	
+
+    //取一个时间
+    public String getTableCacheUpdatedon(){
+        this.open();//打开数据库
+        Cursor cursor = this.database.query (
+                TABLE_CACHE_UPDATE,
+                new String[]{"updatedon"},
+                "id=?",
+                new String[]{"0"},null,null,null);
+        String updatedon = null;
+        while(cursor.moveToNext()){
+            updatedon = cursor.getString(cursor.getColumnIndex("updatedon"));
+        }
+        return updatedon;
+    }
 	//查看缓存表数据
 	public void show_tables_caches(){
         this.open();//打开数据库
