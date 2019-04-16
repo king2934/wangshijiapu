@@ -13,10 +13,12 @@ public class InitThreadSQLiteDB extends Thread {
         super();
         mContext = context;
         sdb = new SQLiteDB(mContext,null);
+        sdb.show_tables();
+        /*
         SQLiteDatabase sqlDB = sdb.getWritableDatabase();
         if(sqlDB.isOpen()){
             Log.d("getdata","thread isOpen");
-        }
+        }/**/
     }
 
     @Override
@@ -28,7 +30,7 @@ public class InitThreadSQLiteDB extends Thread {
                 i++;
                 sleep(1000);
                 Log.d("getdata","start "+i);
-                if(i>=9){
+                if(i>=3){
                     break;
                 }
             } catch (InterruptedException e) {
