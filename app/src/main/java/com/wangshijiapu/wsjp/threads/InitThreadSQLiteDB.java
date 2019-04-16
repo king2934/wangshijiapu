@@ -1,7 +1,6 @@
 package com.wangshijiapu.wsjp.threads;
 
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import com.lanhuispace.sqlite.SQLiteDB;

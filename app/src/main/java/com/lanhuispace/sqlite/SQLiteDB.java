@@ -12,6 +12,8 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public static final String TAG = "getdata";
     public static final String DB_NAME = "wsjp.db";
     public static final int DB_VERSION = 1;
+	
+    public static final String TABLE_CACHE_UPDATE = "cache_table_update";
     public static final String TABLE_ZIBEI = "zibei";
 
     private SQLiteDatabase database = null;
@@ -34,13 +36,26 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
 	//初始化数据库
-    public void init_db(SQLiteDatabase db){
+    private void init_db(SQLiteDatabase db){
+        this.init_tables(db);
+        Log.d(TAG,"SQLiteDB类：create 表 "+TABLE_CACHE_UPDATE);
+
         this.init_table_zibei(db);
+		Log.d(TAG,"SQLiteDB类：create 表 zibei");
     }
 	
+	//初始化表 各表更新
+	private void init_tables(SQLiteDatabase db){
+		String sql = "create table if not exists "+TABLE_CACHE_UPDATE+" ("
+		+"id integer primary key autoincrement,"
+		+"tbname varchar(32) not null,"
+		+"updatedon datatime"
+		+")";
+        db.execSQL(sql);
+	}
+	
 	//初始化表 - 字辈
-	public void init_table_zibei(SQLiteDatabase db) {
-        Log.d(TAG,"SQLiteDB类：create数据库表 zibei");
+	private void init_table_zibei(SQLiteDatabase db) {        
 		String tb_sql = "create table if not exists " + TABLE_ZIBEI + " ( "
 		+"id integer primary key autoincrement,"
 		+"sort integer not null ,"
@@ -54,14 +69,13 @@ public class SQLiteDB extends SQLiteOpenHelper {
         this.open();
         if(this.database.isOpen()){
             Log.d(TAG,"SQLiteDB类：数据库已经打开...");
-        }
-
-        Cursor cursor = this.database.rawQuery("select name from sqlite_master where type='table' order by name", null);
-        while(cursor.moveToNext()){
-            //遍历出表名
-            String name = cursor.getString(0);
-            Log.d("getdata", "SQLiteDB类：表名name:"+name);
-        }
+			Cursor cursor = this.database.rawQuery("select name from sqlite_master where type='table' order by name", null);
+			while(cursor.moveToNext()){
+				//遍历出表名
+				String name = cursor.getString(0);
+				Log.d(TAG, "SQLiteDB类：表名 "+name);
+			}
+		}        
     }
 
     //打开数据库
