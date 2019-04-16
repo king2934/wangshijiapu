@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dist="http://schemas.android.com/apk/distribution"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.wangshijiapu.wsjp">
 
     <dist:module dist:instant="true" />
 
     <!-- 权限 -->
+    <!-- 设置系统时区 -->
+    <uses-permission android:name="android.permission.SET_TIME_ZONE" tools:ignore="ProtectedPermissions" />
 
     <!-- 访问网络连接 -->
     <uses-permission android:name="android.permission.INTERNET"/>

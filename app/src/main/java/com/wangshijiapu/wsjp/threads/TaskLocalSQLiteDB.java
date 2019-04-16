@@ -21,6 +21,7 @@ public class TaskLocalSQLiteDB extends Thread{
         super.run();
         sdb = new SQLiteDB(mContext,null);
         sdb.show_tables();
+        sdb.show_tables_caches();
         Log.d(TAG,"run...");
 
         int i=0;

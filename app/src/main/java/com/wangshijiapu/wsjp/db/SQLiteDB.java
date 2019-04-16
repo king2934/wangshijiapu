@@ -80,11 +80,42 @@ public class SQLiteDB extends SQLiteOpenHelper {
             }
         }
     }
+	
+	//查看缓存表数据
+	public void show_tables_caches(){
+        this.open();//打开数据库
+
+        /**
+         * 查询获得游标
+         * query(参数...)
+         * 参数1：表名
+         * 参数2：要想显示的列
+         * 参数3：where子句
+         * 参数4：where子句对应的条件值
+         * 参数5：分组方式
+         * 参数6：having条件
+         * 参数7：排序方式
+         */
+		Cursor cursor = this.database.query (
+		        TABLE_CACHE_UPDATE,
+                new String[]{"id","tbname","updatedon"},
+                "id=?",
+                new String[]{"0"},null,null,null);
+        //Cursor cursor = this.database.rawQuery("select * from "+TABLE_CACHE_UPDATE,null);
+		//
+        while(cursor.moveToNext()){
+            //遍历出表名
+            String id = cursor.getString(cursor.getColumnIndex("id"));
+            String tbname = cursor.getString(cursor.getColumnIndex("tbname"));
+            String updatedon = cursor.getString(cursor.getColumnIndex("updatedon"));
+            Log.d(TAG, "data[ id:"+id+", tbname:"+tbname+", updatedon:"+updatedon+" ] ");
+        }
+	}
 
     //打开数据库
     public void open(){
         if(this.database==null){
-            this.database = this.getReadableDatabase();
+            this.database = this.getReadableDatabase();//getReadableDatabase getWritableDatabase
         }
     }
     @Override
