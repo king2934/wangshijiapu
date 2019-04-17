@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.wangshijiapu.wsjp.db.SQLiteDB;
 
+import java.util.List;
+
 public class TaskLocalSQLiteDB extends Thread{
     public static final String TAG = "TaskSQDB";
     private Context mContext;
@@ -20,8 +22,12 @@ public class TaskLocalSQLiteDB extends Thread{
     public void run() {
         super.run();
         sdb = new SQLiteDB(mContext,null);
-        sdb.show_tables();
-        sdb.show_tables_caches();
+        //sdb.show_tables();
+        //sdb.show_tables_caches();
+        List uptables = sdb.AutoCheckCacheTableUpdate();
+        for(int i=0;i<uptables.size();i++){
+            Log.d(TAG,"需要更新的表是："+uptables.get(i));
+        }
         Log.d(TAG,"run...");
 
         int i=0;

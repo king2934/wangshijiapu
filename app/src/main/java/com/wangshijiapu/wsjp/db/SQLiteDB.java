@@ -9,6 +9,9 @@ import android.util.Log;
 
 import com.lanhuispace.tools.SysUtils;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.Nullable;
 
 public class SQLiteDB extends SQLiteOpenHelper {
@@ -20,10 +23,12 @@ public class SQLiteDB extends SQLiteOpenHelper {
     public static final String TABLE_ZIBEI = "zibei";
 
     private SQLiteDatabase database = null;
+    private SysUtils sysutil = null;
 
     public SQLiteDB(@Nullable Context context,  @Nullable SQLiteDatabase.CursorFactory factory) {
         super(context, DB_NAME, factory, DB_VERSION);
         Log.d(TAG,"new SQLiteDB");
+		this.sysutil = new SysUtils();
     }
 
     @Override
@@ -62,9 +67,14 @@ public class SQLiteDB extends SQLiteOpenHelper {
         ContentValues cval = new ContentValues();
         cval.put("id",0);
         cval.put("tbname","表名");
-        cval.put("updatedon",new SysUtils().getDateTime());
+        cval.put("updatedon",this.sysutil.getDateTime());//
+		
+		ContentValues cv_zibei = new ContentValues();
+        cv_zibei.put("tbname","zibei");
+        cv_zibei.put("updatedon","2019-01-01 00:00:01");
 
         db.insert(this.TABLE_CACHE_UPDATE,null,cval);
+        db.insert(this.TABLE_CACHE_UPDATE,null,cv_zibei);
     }
 
     //所有表
@@ -80,21 +90,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
             }
         }
     }
-
-    //取一个时间
-    public String getTableCacheUpdatedon(){
-        this.open();//打开数据库
-        Cursor cursor = this.database.query (
-                TABLE_CACHE_UPDATE,
-                new String[]{"updatedon"},
-                "id=?",
-                new String[]{"0"},null,null,null);
-        String updatedon = null;
-        while(cursor.moveToNext()){
-            updatedon = cursor.getString(cursor.getColumnIndex("updatedon"));
-        }
-        return updatedon;
-    }
+    
 	//查看缓存表数据
 	public void show_tables_caches(){
         this.open();//打开数据库
@@ -126,6 +122,38 @@ public class SQLiteDB extends SQLiteOpenHelper {
         }
 	}
 
+	//取一个时间
+    public String getTableCacheUpdatedon(){
+        this.open();//打开数据库
+        Cursor cursor = this.database.query (
+                TABLE_CACHE_UPDATE,
+                new String[]{"updatedon"},
+                "id=?",
+                new String[]{"0"},null,null,null);
+        String updatedon = null;
+        while(cursor.moveToNext()){
+            updatedon = cursor.getString(cursor.getColumnIndex("updatedon"));
+        }
+        return updatedon;
+    }
+	
+	//自动检查表是否要更新
+	public List AutoCheckCacheTableUpdate(){
+		List list = new ArrayList();
+		this.open();//打开数据库
+		Cursor cursor = this.database.query (TABLE_CACHE_UPDATE,null,null,null,null,null,null);
+		while(cursor.moveToNext()){
+			String id = cursor.getString(cursor.getColumnIndex("id"));
+            String tbname = cursor.getString(cursor.getColumnIndex("tbname"));
+            String updatedon = cursor.getString(cursor.getColumnIndex("updatedon"));
+			int diss = this.sysutil.getIntCompareDatetimeHour(this.sysutil.getDateTime(),updatedon);
+			if(diss>=24 && id!="0"){
+				list.add(tbname);
+			}
+		}
+		return list;
+	}
+	
     //打开数据库
     public void open(){
         if(this.database==null){
