@@ -9,6 +9,8 @@ import android.util.Log;
 
 import com.lanhuispace.tools.SysUtils;
 
+import org.json.JSONArray;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,6 +72,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         cval.put("updatedon",this.sysutil.getDateTime());//
 		
 		ContentValues cv_zibei = new ContentValues();
+		cv_zibei.put("id",1);
         cv_zibei.put("tbname","zibei");
         cv_zibei.put("updatedon","2019-01-01 00:00:01");
 
@@ -162,6 +165,28 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
+    }
+
+    //检查本地字辈表(zibei)数据保质期
+    public boolean isExpireZibei() {
+        this.open();//打开数据库
+        Cursor cursor = this.database.query (
+                TABLE_CACHE_UPDATE,
+                new String[]{"updatedon"},
+                "id=?",
+                new String[]{"1"},null,null,null);
+        cursor.moveToFirst();
+        String updatedon = cursor.getString(0);
+        int diss = this.sysutil.getIntCompareDatetimeHour(this.sysutil.getDateTime(),updatedon);
+        if(diss>=24){
+            return true;
+        }
+        return false;
+    }
+
+    //接收传递过来的数据写到本地库中 字辈 zibei
+    public void putDataZiBei(JSONArray jsonArray) {
 
     }
 }
