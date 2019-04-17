@@ -10,6 +10,8 @@ import android.util.Log;
 import com.lanhuispace.tools.SysUtils;
 
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -200,7 +202,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
 				ContentValues cval = new ContentValues();
 				cval.put("sort",jsonArray.getJSONArray(i).getString(0));
 				cval.put("name",jsonArray.getJSONArray(i).getString(1));
-                cval.put("total",jsonArray.getJSONArray(i).getString(2));
+                cval.put("total_number",jsonArray.getJSONArray(i).getString(2));
                 cval.put("createdon",createdon);
 
                 this.database.insert(this.TABLE_ZIBEI,null,cval);
@@ -214,5 +216,19 @@ public class SQLiteDB extends SQLiteOpenHelper {
 			//结束事务
 			this.database.endTransaction();
 		}
+    }
+
+	//接收传递过来的数据写到本地库中 字辈 zibei
+    public void putDataZiBei(String jsonData) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonData);
+            int ResultCode = jsonObject.getInt("ResultCode");
+			int total_items = jsonObject.getInt("total_items");
+            if(ResultCode==0){
+                JSONArray jsonArray = jsonObject.getJSONArray("Data");
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }

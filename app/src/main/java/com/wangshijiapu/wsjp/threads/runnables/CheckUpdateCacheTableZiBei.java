@@ -6,10 +6,6 @@ import android.util.Log;
 import com.lanhuispace.http.GetJson;
 import com.wangshijiapu.wsjp.db.SQLiteDB;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 public class CheckUpdateCacheTableZiBei implements Runnable{
     private static final String TAG="geturlzibei";
     protected Context mContext;
@@ -26,6 +22,9 @@ public class CheckUpdateCacheTableZiBei implements Runnable{
         //检查本地表是否要更新
         if(sdb.isExpireZibei()){
             String strUrl = "https://www.wangshijiapu.com/api/zibei.php";
+            sdb.putDataZiBei(new GetJson(strUrl).getDataJson());
+
+            /*
             GetJson getJson = new GetJson(strUrl);
             String jsonData = getJson.getDataJson();
             Log.d(TAG,jsonData);
@@ -39,6 +38,7 @@ public class CheckUpdateCacheTableZiBei implements Runnable{
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            /**/
         }
     }
 }
