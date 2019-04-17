@@ -28,7 +28,7 @@ public class CheckUpdateCacheTableZiBei implements Runnable{
             String strUrl = "https://www.wangshijiapu.com/api/zibei.php";
             GetJson getJson = new GetJson(strUrl);
             String jsonData = getJson.getDataJson();
-
+            Log.d(TAG,jsonData);
             try {
                 JSONObject jsonObject = new JSONObject(jsonData);
                 int ResultCode = jsonObject.getInt("ResultCode");

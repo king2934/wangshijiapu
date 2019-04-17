@@ -52,7 +52,9 @@ public class SQLiteDB extends SQLiteOpenHelper {
         String sql = "create table if not exists " + TABLE_ZIBEI + " ( "
                 +"id integer primary key autoincrement,"
                 +"sort integer not null ,"
-                +"name varchar(2) not null"
+				+"total integer not null default 0,"
+                +"name varchar(2) unique not null,"
+				+"createdon datetime"
                 +")";
         db.execSQL(sql);
     }
@@ -187,6 +189,30 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
     //接收传递过来的数据写到本地库中 字辈 zibei
     public void putDataZiBei(JSONArray jsonArray) {
+        //打开数据库
+        this.open();
 
+        //开启事务处理
+        this.database.beginTransaction();
+		String createdon = this.sysutil.getDateTime();
+		try{
+			for(int i = 0;i < jsonArray.length(); i++){
+				ContentValues cval = new ContentValues();
+				cval.put("sort",jsonArray.getJSONArray(i).getString(0));
+				cval.put("name",jsonArray.getJSONArray(i).getString(1));
+                cval.put("total",jsonArray.getJSONArray(i).getString(2));
+                cval.put("createdon",createdon);
+
+                this.database.insert(this.TABLE_ZIBEI,null,cval);
+			}
+			
+			//标记事务为成功 结束事务时提交事务
+			this.database.setTransactionSuccessful();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			//结束事务
+			this.database.endTransaction();
+		}
     }
 }
