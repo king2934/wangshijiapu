@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
+import com.ashokvarma.bottomnavigation.ShapeBadgeItem;
+import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.wangshijiapu.wsjp.db.SQLiteDB;
 import com.wangshijiapu.wsjp.services.InitService;
 
@@ -47,12 +49,16 @@ public class MainActivity extends AppCompatActivity {
             .setInActiveColor(R.color.DarkGray)//默认未选择颜色
             .setBarBackgroundColor(R.color.White);//默认背景色
 		
+		TextBadgeItem numberBadgeItem = new TextBadgeItem();
+		ShapeBadgeItem shapeBadgeItem = new ShapeBadgeItem();
+        
         mBottomNavigationBar
 			.addItem(new BottomNavigationItem(R.drawable.home_light,"首页"))
-			.addItem(new BottomNavigationItem(R.drawable.circle,"谱系"))
-			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人"))
+			.addItem(new BottomNavigationItem(R.drawable.circle,"谱系").setBadgeItem(numberBadgeItem))
+			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人").setBadgeItem(shapeBadgeItem))
 			.setFirstSelectedPosition(0)
 			.initialise();
+		numberBadgeItem.setText("3");
     }
 
     public void btnGetUpdatedon(View view) {
