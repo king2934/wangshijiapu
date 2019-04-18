@@ -7,7 +7,7 @@ import com.lanhuispace.http.GetJson;
 import com.wangshijiapu.wsjp.db.SQLiteDB;
 
 public class CheckUpdateCacheTableZiBei implements Runnable{
-    private static final String TAG="geturlzibei";
+    private static final String TAG="CKzibei";
     protected Context mContext;
 
     public CheckUpdateCacheTableZiBei(Context context) {
@@ -21,24 +21,10 @@ public class CheckUpdateCacheTableZiBei implements Runnable{
 
         //检查本地表是否要更新
         if(sdb.isExpireZibei()){
+            Log.d(TAG,"检查更新，要更新...");
             String strUrl = "https://www.wangshijiapu.com/api/zibei.php";
             sdb.putDataZiBei(new GetJson(strUrl).getDataJson());
-
-            /*
-            GetJson getJson = new GetJson(strUrl);
-            String jsonData = getJson.getDataJson();
-            Log.d(TAG,jsonData);
-            try {
-                JSONObject jsonObject = new JSONObject(jsonData);
-                int ResultCode = jsonObject.getInt("ResultCode");
-                if(ResultCode==0){
-                    JSONArray jsonArray = jsonObject.getJSONArray("Data");
-                    sdb.putDataZiBei(jsonArray);
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            /**/
         }
+        sdb.getDataZiBei();
     }
 }

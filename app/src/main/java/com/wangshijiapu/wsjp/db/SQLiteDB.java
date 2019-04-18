@@ -54,7 +54,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         String sql = "create table if not exists " + TABLE_ZIBEI + " ( "
                 +"id integer primary key autoincrement,"
                 +"sort integer not null ,"
-				+"total integer not null default 0,"
+				+"total_number integer not null default 0,"
                 +"name varchar(2) unique not null,"
 				+"createdon datetime"
                 +")";
@@ -66,6 +66,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         String sql = "create table if not exists "+TABLE_CACHE_UPDATE+" ("
                 +"id integer primary key autoincrement,"
                 +"tbname varchar(32) not null,"
+                +"total integer not null default 0,"
                 +"updatedon datatime"
                 +")";
         db.execSQL(sql);
@@ -76,7 +77,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
         cval.put("updatedon",this.sysutil.getDateTime());//
 		
 		ContentValues cv_zibei = new ContentValues();
-		cv_zibei.put("id",1);
+		cv_zibei.put("id",1); 
         cv_zibei.put("tbname","zibei");
         cv_zibei.put("updatedon","2019-01-01 00:00:01");
 
@@ -115,17 +116,18 @@ public class SQLiteDB extends SQLiteOpenHelper {
          */
 		Cursor cursor = this.database.query (
 		        TABLE_CACHE_UPDATE,
-                new String[]{"id","tbname","updatedon"},
-                "id=?",
-                new String[]{"0"},null,null,null);
+                null,
+                null,
+                null,null,null,null);
         //Cursor cursor = this.database.rawQuery("select * from "+TABLE_CACHE_UPDATE,null);
 		//
         while(cursor.moveToNext()){
             //遍历出表名
             String id = cursor.getString(cursor.getColumnIndex("id"));
             String tbname = cursor.getString(cursor.getColumnIndex("tbname"));
+            String total = cursor.getString(cursor.getColumnIndex("total"));
             String updatedon = cursor.getString(cursor.getColumnIndex("updatedon"));
-            Log.d(TAG, "data[ id:"+id+", tbname:"+tbname+", updatedon:"+updatedon+" ] ");
+            Log.d(TAG, "data[ id:"+id+", total:"+total+" tbname:"+tbname+", updatedon:"+updatedon+" ] ");
         }
 	}
 
@@ -190,7 +192,7 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
     //接收传递过来的数据写到本地库中 字辈 zibei
-    public void putDataZiBei(JSONArray jsonArray) {
+    private void putData_ZiBei(JSONArray jsonArray) {
         //打开数据库
         this.open();
 
@@ -220,15 +222,46 @@ public class SQLiteDB extends SQLiteOpenHelper {
 
 	//接收传递过来的数据写到本地库中 字辈 zibei
     public void putDataZiBei(String jsonData) {
+        //打开数据库
+        this.open();
+		
         try {
             JSONObject jsonObject = new JSONObject(jsonData);
             int ResultCode = jsonObject.getInt("ResultCode");
 			int total_items = jsonObject.getInt("total_items");
             if(ResultCode==0){
-                JSONArray jsonArray = jsonObject.getJSONArray("Data");
+				
+				JSONArray jsonArray = jsonObject.getJSONArray("Data");
+				this.putData_ZiBei(jsonArray);
+				
+				String sql = "update "+TABLE_CACHE_UPDATE+" set updatedon='"+this.sysutil.getDateTime()+"',total="+total_items+" where id=1 and tbname='zibei'";
+				this.database.execSQL(sql); 
+                
             }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+	//取本地数据库字辈
+    public void getDataZiBei() {
+        //打开数据库
+        this.open();
+		Cursor cursor = this.database.query (TABLE_ZIBEI,null,null,null,null,null,null);
+		while(cursor.moveToNext()){
+			String id = cursor.getString(cursor.getColumnIndex("id"));
+			String sort = cursor.getString(cursor.getColumnIndex("sort"));
+			String name = cursor.getString(cursor.getColumnIndex("name"));
+			String total_number = cursor.getString(cursor.getColumnIndex("total_number"));
+			String createdon = cursor.getString(cursor.getColumnIndex("createdon"));
+			
+			String datas = "id:"+id
+				+", 排序:"+sort
+				+", 字:"+name
+				+", 人数:"+total_number
+				+", 本地保存时间:"+createdon
+			;
+			Log.d(TAG,datas);
+		}
     }
 }
