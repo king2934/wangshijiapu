@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         String datetime = sdb.getTableCacheUpdatedon();
 
         TextView tv = findViewById(R.id.id_main_TextView);
-        tv.setText(datetime);
+        String zb = sdb.getDataZiBei();
+        tv.setText("取自数据库：["+zb+"]");
     }
 }
 

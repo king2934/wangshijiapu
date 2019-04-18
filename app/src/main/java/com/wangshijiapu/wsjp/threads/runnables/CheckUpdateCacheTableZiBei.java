@@ -25,6 +25,6 @@ public class CheckUpdateCacheTableZiBei implements Runnable{
             String strUrl = "https://www.wangshijiapu.com/api/zibei.php";
             sdb.putDataZiBei(new GetJson(strUrl).getDataJson());
         }
-        sdb.getDataZiBei();
+        //sdb.getDataZiBei();
     }
 }

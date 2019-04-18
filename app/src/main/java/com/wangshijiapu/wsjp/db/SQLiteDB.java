@@ -244,17 +244,19 @@ public class SQLiteDB extends SQLiteOpenHelper {
     }
 
 	//取本地数据库字辈
-    public void getDataZiBei() {
+    public String getDataZiBei() {
+		String zibei="";
         //打开数据库
         this.open();
 		Cursor cursor = this.database.query (TABLE_ZIBEI,null,null,null,null,null,null);
+		
 		while(cursor.moveToNext()){
 			String id = cursor.getString(cursor.getColumnIndex("id"));
 			String sort = cursor.getString(cursor.getColumnIndex("sort"));
 			String name = cursor.getString(cursor.getColumnIndex("name"));
 			String total_number = cursor.getString(cursor.getColumnIndex("total_number"));
 			String createdon = cursor.getString(cursor.getColumnIndex("createdon"));
-			
+            zibei +=name;
 			String datas = "id:"+id
 				+", 排序:"+sort
 				+", 字:"+name
@@ -263,5 +265,6 @@ public class SQLiteDB extends SQLiteOpenHelper {
 			;
 			Log.d(TAG,datas);
 		}
+		return zibei;
     }
 }
