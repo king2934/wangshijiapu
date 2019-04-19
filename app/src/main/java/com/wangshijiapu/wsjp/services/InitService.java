@@ -3,6 +3,7 @@ package com.wangshijiapu.wsjp.services;
 import android.app.DownloadManager;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Handler;
@@ -22,6 +23,7 @@ import androidx.annotation.Nullable;
 
 public class InitService extends Service {
     public static final String TAG = "InitService";
+    private Context mContext;
 	
 	private BroadcastReceiver downLoadApkBroadcast;
 
@@ -36,7 +38,8 @@ public class InitService extends Service {
 
     public InitService() {
         super();
-		this.registerBroadcast();//注册广播
+        this.mContext = getBaseContext();
+		this.downLoadApkBroadcast = null;
     }
 
     //创建服务时调用
@@ -44,7 +47,12 @@ public class InitService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-    }
+		this.downLoadApkBroadcast = new DownLoadApkBroadcast(this.mContext);
+		this.registerBroadcast();//注册广播
+		if(this.downLoadApkBroadcast!=null){
+			Log.d(TAG, "广播类");
+		}
+	}
 
     //服务执行的操作
     @Override
@@ -99,7 +107,7 @@ public class InitService extends Service {
        IntentFilter intentFilter = new IntentFilter();
        intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
        intentFilter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
-       registerReceiver(downLoadApkBroadcast = new DownLoadApkBroadcast(), intentFilter);
+       registerReceiver(downLoadApkBroadcast, intentFilter);
 	}
 
 	//注销广播

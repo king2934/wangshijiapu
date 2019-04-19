@@ -4,6 +4,7 @@ import android.content.Context;
 import android.util.Log;
 
 import com.lanhuispace.http.GetJson;
+import com.wangshijiapu.wsjp.R;
 import com.wangshijiapu.wsjp.db.SQLiteDB;
 
 public class CheckUpdateCacheTableZiBei implements Runnable{
@@ -22,7 +23,8 @@ public class CheckUpdateCacheTableZiBei implements Runnable{
         //检查本地表是否要更新
         if(sdb.isExpireZibei()){
             Log.d(TAG,"检查更新，要更新...");
-            String strUrl = "https://www.wangshijiapu.com/api/zibei.php";
+            String url_home = mContext.getResources().getString(R.string.url_app_link_main);
+            String strUrl = url_home + mContext.getResources().getString(R.string.url_zibei);
             sdb.putDataZiBei(new GetJson(strUrl).getDataJson());
         }
         //sdb.getDataZiBei();

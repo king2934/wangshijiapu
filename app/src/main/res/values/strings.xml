@@ -3,5 +3,6 @@
     <string name="init_service">家谱后台服务</string>
 
     <string name="url_app_link_main">https://www.wangshijiapu.com</string>
+    <string name="url_zibei">/api/zibei.php</string>
     <string name="url_check_update_app">/api/check_update_app.php</string>
 </resources>
