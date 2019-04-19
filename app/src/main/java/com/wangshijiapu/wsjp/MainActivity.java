@@ -4,6 +4,7 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
 
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
     private void initBottomNavigationBar(){
         mBottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
 
@@ -55,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
         mBottomNavigationBar
 			.addItem(new BottomNavigationItem(R.drawable.home_light,"首页"))
 			.addItem(new BottomNavigationItem(R.drawable.jp_book,"家谱").setBadgeItem(shapeBadgeItem))
-			.addItem(new BottomNavigationItem(R.drawable.circle,"谱系").setBadgeItem(numberBadgeItem))
-			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人"))
+			.addItem(new BottomNavigationItem(R.drawable.people_list,"联系人"))
+			.addItem(new BottomNavigationItem(R.drawable.circle,"谱系"))
+			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人").setBadgeItem(numberBadgeItem))
 			.setFirstSelectedPosition(0)
 			.initialise();
 		numberBadgeItem.setText("3");
@@ -69,6 +73,17 @@ public class MainActivity extends AppCompatActivity {
         TextView tv = findViewById(R.id.id_main_TextView);
         String zb = sdb.getDataZiBei();
         tv.setText("取自数据库：["+zb+"]");
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
 
