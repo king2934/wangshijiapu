@@ -1,10 +1,17 @@
 package com.wangshijiapu.wsjp.services;
 
+import android.app.DownloadManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 
+import com.wangshijiapu.wsjp.broadcasts.DownLoadApkBroadcast;
+import com.wangshijiapu.wsjp.threads.runnables.CheckUpdateAppVersion;
 import com.wangshijiapu.wsjp.threads.runnables.CheckUpdateCacheTableZiBei;
 
 import java.util.concurrent.Executors;
@@ -15,8 +22,21 @@ import androidx.annotation.Nullable;
 
 public class InitService extends Service {
     public static final String TAG = "InitService";
+	
+	private BroadcastReceiver downLoadApkBroadcast;
+
+    public Handler DownloadApkHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            String info= (String) msg.obj;
+            Log.d(TAG,"Handler:"+info);
+        }
+    };
+
     public InitService() {
         super();
+		this.registerBroadcast();//注册广播
     }
 
     //创建服务时调用
@@ -30,7 +50,7 @@ public class InitService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.d(TAG, "onStartCommand");
-        //new TaskLocalSQLiteDB(getBaseContext()).start();
+
         /*
         * 1、newFixedThreadPool()
         * 2、newCachedThreadPool()
@@ -44,7 +64,19 @@ public class InitService extends Service {
         * ScheduledExecutorService singleThreadScheduledPool = Executors.newSingleThreadScheduledExecutor();
         */
         //定时周期性线程池
-        ScheduledExecutorService task =   Executors.newScheduledThreadPool(5);
+        ScheduledExecutorService taskApp =   Executors.newScheduledThreadPool(1);
+		taskApp.scheduleWithFixedDelay(
+		    new CheckUpdateAppVersion(
+			        getBaseContext(),
+                    DownloadApkHandler,
+					downLoadApkBroadcast
+            ),
+			0, 
+			30, 
+			TimeUnit.MINUTES);
+		
+		//定时周期性线程池
+		ScheduledExecutorService task =   Executors.newScheduledThreadPool(5);
 
         //延迟0秒后，每隔10分钟执行一次该任务
         /*
@@ -61,10 +93,31 @@ public class InitService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+	//注册广播
+	private void registerBroadcast() {
+		/**注册service 广播 1.任务完成时 2.进行中的任务被点击*/
+       IntentFilter intentFilter = new IntentFilter();
+       intentFilter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
+       intentFilter.addAction(DownloadManager.ACTION_NOTIFICATION_CLICKED);
+       registerReceiver(downLoadApkBroadcast = new DownLoadApkBroadcast(), intentFilter);
+	}
+
+	//注销广播
+    private void unregisterBroadcast(){
+        if(downLoadApkBroadcast != null){
+            unregisterReceiver(downLoadApkBroadcast);
+            downLoadApkBroadcast = null;
+        }
+
+    }
+	
+	
+	
     //销毁服务时调用
     @Override
     public void onDestroy() {
         super.onDestroy();
+		unregisterBroadcast();
     }
 
     @Nullable

@@ -2,6 +2,7 @@ package com.wangshijiapu.wsjp;
 
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -14,6 +15,8 @@ import com.ashokvarma.bottomnavigation.ShapeBadgeItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.wangshijiapu.wsjp.db.SQLiteDB;
 import com.wangshijiapu.wsjp.services.InitService;
+
+import org.w3c.dom.Text;
 
 import static java.lang.Thread.sleep;
 
@@ -32,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+
         setContentView(R.layout.activity_main);
         //todo
         this.initBottomNavigationBar();
