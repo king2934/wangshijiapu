@@ -47,7 +47,7 @@ public class InitService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "onCreate");
-		this.downLoadApkBroadcast = new DownLoadApkBroadcast(this.mContext);
+		this.downLoadApkBroadcast = new DownLoadApkBroadcast();
 		this.registerBroadcast();//注册广播
 		if(this.downLoadApkBroadcast!=null){
 			Log.d(TAG, "广播类");
@@ -74,11 +74,7 @@ public class InitService extends Service {
         //定时周期性线程池
         ScheduledExecutorService taskApp =   Executors.newScheduledThreadPool(1);
 		taskApp.scheduleWithFixedDelay(
-		    new CheckUpdateAppVersion(
-			        getBaseContext(),
-                    DownloadApkHandler,
-					downLoadApkBroadcast
-            ),
+		    new CheckUpdateAppVersion(getBaseContext()),
 			0, 
 			30, 
 			TimeUnit.MINUTES);

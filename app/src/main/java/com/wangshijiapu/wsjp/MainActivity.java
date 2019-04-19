@@ -4,10 +4,14 @@ import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -17,6 +21,8 @@ import com.wangshijiapu.wsjp.db.SQLiteDB;
 import com.wangshijiapu.wsjp.services.InitService;
 
 import org.w3c.dom.Text;
+
+import java.io.File;
 
 import static java.lang.Thread.sleep;
 
@@ -71,12 +77,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void btnGetUpdatedon(View view) {
-        SQLiteDB sdb = new SQLiteDB(getBaseContext(),null);
-        String datetime = sdb.getTableCacheUpdatedon();
+        //SQLiteDB sdb = new SQLiteDB(getBaseContext(),null);
+        //String datetime = sdb.getTableCacheUpdatedon();
 
         TextView tv = findViewById(R.id.id_main_TextView);
-        String zb = sdb.getDataZiBei();
-        tv.setText("取自数据库：["+zb+"]");
+        //String zb = sdb.getDataZiBei();
+        //tv.setText("取自数据库：["+zb+"]");
+		
+		String sdPath = Environment.getExternalStorageDirectory().getPath()+"/wangshijiapu_downloads/wsjp.apk";
+		//Log.d(TAG,"sdPath:"+sdPath);
+		tv.setText(sdPath);		
+		
+		PackageManager packageManager = getPackageManager();
+		PackageInfo packageInfo = packageManager.getPackageArchiveInfo(sdPath, PackageManager.GET_ACTIVITIES);
+        Toast.makeText(this,"versionCode:"+packageInfo.versionCode+",pname:"+packageInfo.packageName+",versionName:"+packageInfo.versionName,Toast.LENGTH_LONG).show();
     }
 
 

@@ -6,7 +6,7 @@ import android.os.Message;
 
 public class DownloadApkChange extends ContentObserver {
     /**
-     * Creates a content observer.
+     * Creates a content observer. 监听下载时的变化 目前没用
      *
      * @param handler The handler to run {@link #onChange} on, or null if none.
      */

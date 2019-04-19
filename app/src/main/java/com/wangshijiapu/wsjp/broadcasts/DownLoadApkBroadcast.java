@@ -4,22 +4,35 @@ import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
-import android.widget.Toast;
+import android.net.Uri;
 
 public class DownLoadApkBroadcast extends BroadcastReceiver {
     public static final String TAG = "dApkb";
     private Context mContext;
 
-    public DownLoadApkBroadcast(Context context) {
-        mContext = context;
+    public DownLoadApkBroadcast() {
+
     }
 
     @Override
     public void onReceive(Context context, Intent intent) {
-		Log.d(TAG,"接收到了广播，文件可能已经下载完成。");
-        Toast.makeText(context,"接收下载完成广播",Toast.LENGTH_LONG).show();
-		//long ID = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
-        //Log.d(TAG,"广播"+ID);
+        mContext = context;
+        //检测下载完成事件
+        if(intent.getAction().equals(DownloadManager.ACTION_DOWNLOAD_COMPLETE)){
+            long downId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, -1);
+            installApk(downId);
+        }
+
+    }
+
+    //安装下载的Apk
+    private void installApk(long downId) {
+        DownloadManager downloadManager = (DownloadManager) mContext.getSystemService(Context.DOWNLOAD_SERVICE);
+        Uri downloadApkUri = downloadManager.getUriForDownloadedFile(downId);
+        Intent intent = new Intent();
+        //intent.setAction(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//FLAG_GRANT_READ_URI_PERMISSION FLAG_ACTIVITY_NEW_TASK
+        intent.setDataAndType(downloadApkUri, "application/vnd.android.package-archive");
+        this.mContext.startActivity(intent);
     }
 }
