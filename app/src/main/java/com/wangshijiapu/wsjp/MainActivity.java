@@ -54,8 +54,9 @@ public class MainActivity extends AppCompatActivity {
         
         mBottomNavigationBar
 			.addItem(new BottomNavigationItem(R.drawable.home_light,"首页"))
+			.addItem(new BottomNavigationItem(R.drawable.jp_book,"家谱").setBadgeItem(shapeBadgeItem))
 			.addItem(new BottomNavigationItem(R.drawable.circle,"谱系").setBadgeItem(numberBadgeItem))
-			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人").setBadgeItem(shapeBadgeItem))
+			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人"))
 			.setFirstSelectedPosition(0)
 			.initialise();
 		numberBadgeItem.setText("3");
