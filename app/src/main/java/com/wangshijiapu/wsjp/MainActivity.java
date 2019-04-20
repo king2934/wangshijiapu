@@ -3,6 +3,9 @@ package com.wangshijiapu.wsjp;
 import android.content.Intent;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -18,17 +21,23 @@ import com.ashokvarma.bottomnavigation.BottomNavigationItem;
 import com.ashokvarma.bottomnavigation.ShapeBadgeItem;
 import com.ashokvarma.bottomnavigation.TextBadgeItem;
 import com.wangshijiapu.wsjp.db.SQLiteDB;
+import com.wangshijiapu.wsjp.fragments.ContactsFragment;
+import com.wangshijiapu.wsjp.fragments.FamilyFragment;
+import com.wangshijiapu.wsjp.fragments.HomeFragment;
+import com.wangshijiapu.wsjp.fragments.MyTreeFragment;
+import com.wangshijiapu.wsjp.fragments.UserFragment;
+import com.wangshijiapu.wsjp.listeners.MyBottomNavBarSelectedListener;
 import com.wangshijiapu.wsjp.services.InitService;
 
-import org.w3c.dom.Text;
-
-import java.io.File;
+import java.util.ArrayList;
 
 import static java.lang.Thread.sleep;
 
 public class MainActivity extends AppCompatActivity {
 
+    private ArrayList<Fragment> mFragmentArrayList;
     protected BottomNavigationBar mBottomNavigationBar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,12 +53,33 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         //todo
+        this.initFragment();
         this.initBottomNavigationBar();
-
     }
 
+    //初始化
+    private void initFragment() {
+        mFragmentArrayList = new ArrayList<Fragment>();
+        mFragmentArrayList.add(new HomeFragment());
+        mFragmentArrayList.add(new FamilyFragment());
+        mFragmentArrayList.add(new ContactsFragment());
+        mFragmentArrayList.add(new MyTreeFragment());
+        mFragmentArrayList.add(new UserFragment());
 
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
+        for (int i = 0 ;i < mFragmentArrayList.size(); i++){
+            Fragment fragment = mFragmentArrayList.get(i);
+            ft.add(R.id.layout_fragment,fragment);
+            ft.hide(fragment);
+            if(i==0){
+                ft.show(fragment);
+            }
+        }
+        ft.commit();
+    }
+
+    //底部导航
     private void initBottomNavigationBar(){
         mBottomNavigationBar = findViewById(R.id.bottom_navigation_bar);
 
@@ -74,23 +104,8 @@ public class MainActivity extends AppCompatActivity {
 			.setFirstSelectedPosition(0)
 			.initialise();
 		numberBadgeItem.setText("3");
-    }
 
-    public void btnGetUpdatedon(View view) {
-        //SQLiteDB sdb = new SQLiteDB(getBaseContext(),null);
-        //String datetime = sdb.getTableCacheUpdatedon();
-
-        TextView tv = findViewById(R.id.id_main_TextView);
-        //String zb = sdb.getDataZiBei();
-        //tv.setText("取自数据库：["+zb+"]");
-		
-		String sdPath = Environment.getExternalStorageDirectory().getPath()+"/wangshijiapu_downloads/wsjp.apk";
-		//Log.d(TAG,"sdPath:"+sdPath);
-		tv.setText(sdPath);		
-		
-		PackageManager packageManager = getPackageManager();
-		PackageInfo packageInfo = packageManager.getPackageArchiveInfo(sdPath, PackageManager.GET_ACTIVITIES);
-        Toast.makeText(this,"versionCode:"+packageInfo.versionCode+",pname:"+packageInfo.packageName+",versionName:"+packageInfo.versionName,Toast.LENGTH_LONG).show();
+        mBottomNavigationBar.setTabSelectedListener(new MyBottomNavBarSelectedListener(this,mFragmentArrayList));
     }
 
 
