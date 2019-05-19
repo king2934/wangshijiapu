@@ -24,6 +24,19 @@ public class MyBottomNavBarSelectedListener implements BottomNavigationBar.OnTab
         mFragmentArrayList = mfragments;
     }
 
+    private void showFragment(int index){
+        FragmentTransaction ft = mMainActivity.getSupportFragmentManager().beginTransaction();
+        Fragment fragment = mFragmentArrayList.get(index);
+        ft.show(fragment);
+        ft.commit();
+    }
+    private void hideFragment(int index){
+        FragmentTransaction ft = mMainActivity.getSupportFragmentManager().beginTransaction();
+        Fragment fragment = mFragmentArrayList.get(index);
+        ft.hide(fragment);
+        ft.commit();
+    }
+
     private void showTransaction(int index){
         FragmentTransaction ft = mMainActivity.getSupportFragmentManager().beginTransaction();
         hideTransaction(ft);
@@ -44,21 +57,23 @@ public class MyBottomNavBarSelectedListener implements BottomNavigationBar.OnTab
 
 
     @Override
-    public void onTabSelected(int position) {
-        showTransaction(position);
+    public void onTabSelected(int position) { //未选中 -> 选中
+        //showTransaction(position);
+        showFragment(position);
         //选择一个 置为活动
-        Log.d(TAG,"position"+position);
+        Log.d(TAG,"未选中 -> 选中 "+position);
     }
 
     @Override
-    public void onTabUnselected(int position) {
+    public void onTabUnselected(int position) { //选中 -> 未选中
         // 上一个
-        Log.d(TAG,"position"+position);
+        hideFragment(position);
+        Log.d(TAG,"选中 -> 未选中 "+position);
     }
 
     @Override
-    public void onTabReselected(int position) {
+    public void onTabReselected(int position) { //选中 -> 选中
         //再次选择当前活动
-        Log.d(TAG,"Reselected:"+position);
+        Log.d(TAG,"选中 -> 选中 :"+position);
     }
 }
