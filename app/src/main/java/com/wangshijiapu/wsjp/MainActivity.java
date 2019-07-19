@@ -91,19 +91,21 @@ public class MainActivity extends AppCompatActivity {
 			.setActiveColor(R.color.colorAccent)//选中颜色 图标和文字
             .setInActiveColor(R.color.DarkGray)//默认未选择颜色
             .setBarBackgroundColor(R.color.White);//默认背景色
-		
-		TextBadgeItem numberBadgeItem = new TextBadgeItem();
+
+        TextBadgeItem messageNum = new TextBadgeItem();
+        TextBadgeItem numberBadgeItem = new TextBadgeItem();
 		ShapeBadgeItem shapeBadgeItem = new ShapeBadgeItem();
-        
+        //.setBadgeItem(shapeBadgeItem)
         mBottomNavigationBar
-			.addItem(new BottomNavigationItem(R.drawable.home_light,"首页"))
-			.addItem(new BottomNavigationItem(R.drawable.jp_book,"家谱").setBadgeItem(shapeBadgeItem))
+			.addItem(new BottomNavigationItem(R.drawable.message,"消息").setBadgeItem(messageNum))
 			.addItem(new BottomNavigationItem(R.drawable.people_list,"联系人"))
-			.addItem(new BottomNavigationItem(R.drawable.circle,"谱系"))
+			.addItem(new BottomNavigationItem(R.drawable.home_light,"主页"))
+			.addItem(new BottomNavigationItem(R.drawable.jp_book,"家谱"))
 			.addItem(new BottomNavigationItem(R.drawable.my_light,"个人").setBadgeItem(numberBadgeItem))
 			.setFirstSelectedPosition(0)
 			.initialise();
 		numberBadgeItem.setText("3");
+        messageNum.setText("9");
 
         mBottomNavigationBar.setTabSelectedListener(new MyBottomNavBarSelectedListener(this,mFragmentArrayList));
     }
